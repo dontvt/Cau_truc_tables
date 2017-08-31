@@ -1,0 +1,125 @@
+-- MySQL dump 10.16  Distrib 10.1.22-MariaDB, for Linux (x86_64)
+--
+-- Host: localhost    Database: appota_ewallet_gw
+-- ------------------------------------------------------
+-- Server version	10.1.22-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `client_config`
+--
+
+DROP TABLE IF EXISTS `client_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `client_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `build` int(11) NOT NULL,
+  `deployment_key` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `special_version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `special_build` int(11) NOT NULL,
+  `special_deployment_key` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `special_version_for_vip` tinyint(4) NOT NULL,
+  `platform` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `force_update` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL,
+  `store_status` enum('published','inreview') COLLATE utf8_unicode_ci NOT NULL,
+  `store_url` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `client_oauth`
+--
+
+DROP TABLE IF EXISTS `client_oauth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `client_oauth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `api_key` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `secret_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `version` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `client_oauth_api_key_unique` (`api_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `connection` text COLLATE utf8_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_oauth`
+--
+
+DROP TABLE IF EXISTS `user_oauth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_oauth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `token` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `token_hash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `device_id` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `account_type` enum('user','dealer','merchant','merchant_staff','agency') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
+  `account_rank` enum('basic','silver','gold','platinum','diamond','super_vip') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'basic',
+  `vip` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `scope` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `device_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `device_os` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `os_version` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `client_version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `ip` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `user_agent` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `token_status` enum('verified','unverified') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'verified',
+  `expiry_time` int(10) unsigned NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token_hash` (`token_hash`)
+) ENGINE=InnoDB AUTO_INCREMENT=456363 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-08-30 23:40:55

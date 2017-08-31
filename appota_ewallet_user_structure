@@ -1,0 +1,372 @@
+-- MySQL dump 10.16  Distrib 10.1.22-MariaDB, for Linux (x86_64)
+--
+-- Host: localhost    Database: appota_ewallet_user
+-- ------------------------------------------------------
+-- Server version	10.1.22-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `appvn_users`
+--
+
+DROP TABLE IF EXISTS `appvn_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `appvn_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phone` varchar(15) DEFAULT NULL,
+  `registered` enum('no','yes') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `phone` (`phone`)
+) ENGINE=InnoDB AUTO_INCREMENT=654147 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `bank_atm_accounts`
+--
+
+DROP TABLE IF EXISTS `bank_atm_accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bank_atm_accounts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `wallet_number` bigint(20) unsigned NOT NULL,
+  `holder_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_code` char(5) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_branch` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `account_type` enum('account','card') COLLATE utf8_unicode_ci NOT NULL,
+  `account_number` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `account_number_hash` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `card_expiry_year` int(11) unsigned NOT NULL,
+  `card_expiry_month` tinyint(3) unsigned NOT NULL,
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `mapping_status` enum('request','done') COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `bank_code` (`bank_code`,`account_number_hash`),
+  KEY `phone_number` (`phone_number`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1267891 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `bank_visa_accounts`
+--
+
+DROP TABLE IF EXISTS `bank_visa_accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bank_visa_accounts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_code` char(5) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `card_number` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `card_number_hash` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `card_holder_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `card_expiry_month` tinyint(4) NOT NULL,
+  `card_expiry_year` int(11) NOT NULL,
+  `card_secure_code` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `bank_visa_accounts_card_number_hash_unique` (`card_number_hash`),
+  KEY `phone_number` (`phone_number`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ewallet_balances_history`
+--
+
+DROP TABLE IF EXISTS `ewallet_balances_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ewallet_balances_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `balance` bigint(20) NOT NULL,
+  `cashback_balance` int(11) NOT NULL,
+  `promo_balance` int(11) NOT NULL,
+  `bonus_balance` int(11) NOT NULL,
+  `last_transaction` int(10) unsigned NOT NULL,
+  `date` int(11) unsigned NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB AUTO_INCREMENT=176888 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `connection` text COLLATE utf8_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `game_guest_users`
+--
+
+DROP TABLE IF EXISTS `game_guest_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `game_guest_users` (
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `device_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `ip` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `game_guest_users_username_unique` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `giftcodes`
+--
+
+DROP TABLE IF EXISTS `giftcodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `giftcodes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `used` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=97003 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `guest_users`
+--
+
+DROP TABLE IF EXISTS `guest_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guest_users` (
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `balance` int(11) NOT NULL,
+  `cashback_balance` int(11) NOT NULL,
+  `verify_balance` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `refer` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `guest_users_phone_number_unique` (`phone_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `logs_mapping_bank_account`
+--
+
+DROP TABLE IF EXISTS `logs_mapping_bank_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `logs_mapping_bank_account` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `request_id` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `wallet_number` char(25) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_code` char(5) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_ref` char(50) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_account_type` char(10) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_account_number` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `logs_otp`
+--
+
+DROP TABLE IF EXISTS `logs_otp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `logs_otp` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `service` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=209516 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_ewallet_accounts`
+--
+
+DROP TABLE IF EXISTS `user_ewallet_accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_ewallet_accounts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `account_number` bigint(20) unsigned NOT NULL,
+  `balance` bigint(16) NOT NULL,
+  `cashback_balance` int(11) NOT NULL,
+  `promo_balance` int(11) NOT NULL,
+  `bonus_balance` int(11) NOT NULL,
+  `verify_balance` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `verify_status` enum('unverified','verified') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unverified',
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_ewallet_accounts_user_id_unique` (`user_id`),
+  UNIQUE KEY `user_ewallet_accounts_phone_number_unique` (`phone_number`),
+  UNIQUE KEY `account_number` (`account_number`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=143130 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_transaction`
+--
+
+DROP TABLE IF EXISTS `user_transaction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_transaction` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `transaction_id` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `type` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `balance` int(11) NOT NULL,
+  `cashback_balance` int(11) NOT NULL,
+  `promo_balance` int(11) NOT NULL,
+  `bonus_balance` int(11) NOT NULL,
+  `status` enum('success','rollback') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'success',
+  `timestamp` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `transaction_id` (`transaction_id`,`type`),
+  KEY `timestamp` (`timestamp`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=255621 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `appota_user_id` bigint(20) unsigned DEFAULT NULL,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `first_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `last_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `fullname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `cmnd_number` char(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `account_type` enum('user','dealer','merchant','agency','merchant_staff') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
+  `account_rank` enum('basic','silver','gold','platinum','diamond','super_vip') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'basic',
+  `vip_level` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `address` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `country` char(3) COLLATE utf8_unicode_ci NOT NULL,
+  `gender` enum('male','female','unknow') COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `birthday` date NOT NULL,
+  `fb_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email_status` enum('unverified','verified') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unverified',
+  `block_reason` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `note` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `refer` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `ip` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `users_username_unique` (`username`),
+  UNIQUE KEY `users_phone_number_unique` (`phone_number`),
+  UNIQUE KEY `users_cmnd_number_unique` (`cmnd_number`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `fb_id` (`fb_id`),
+  UNIQUE KEY `google_id` (`google_id`),
+  KEY `created_at` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=260137054 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `users_auth`
+--
+
+DROP TABLE IF EXISTS `users_auth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_auth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `phone_number` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(72) COLLATE utf8_unicode_ci NOT NULL,
+  `salt` char(5) COLLATE utf8_unicode_ci NOT NULL,
+  `pin_code` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `status` enum('inactive','active','blocked') COLLATE utf8_unicode_ci NOT NULL,
+  `pay_verify_method` enum('OTP','PIN_CODE','SECURE_CODE','NONE') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'NONE',
+  `password_updated_at` int(10) unsigned NOT NULL,
+  `pincode_updated_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_update` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_auth_user_id_unique` (`user_id`),
+  UNIQUE KEY `users_auth_phone_number_unique` (`phone_number`),
+  UNIQUE KEY `users_auth_username_unique` (`username`),
+  KEY `users_auth_last_login_index` (`last_login`)
+) ENGINE=InnoDB AUTO_INCREMENT=142964 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-08-30 23:43:03
